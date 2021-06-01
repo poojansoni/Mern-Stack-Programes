@@ -11,6 +11,10 @@ app.get('/login',(req,res)=>{
     res.send("You are logging in");
 });
 
+app.get('/signup',(req,res)=>{
+    res.send("This is sign up page");
+});
+
 app.get('/poojan',(req,res)=>{
     res.send("about the author");
 });
