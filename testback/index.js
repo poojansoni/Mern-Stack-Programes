@@ -7,6 +7,11 @@ app.get('/',(req,res)=>{
     res.send("Welcome to the home page");
 });
 
+const admin = (req,res)=>{res.send("Welcome to admin Dashboard");};
+const IsAdmin = (req,res,next)=>{console.log("CHECKING ADMIN CRED..."); next();};
+const IsLogged = (req,res,next)=>{console.log("CHECKING USER LOGG..."); next();};
+app.get('/admin',IsLogged,IsAdmin,admin);
+
 app.get('/login',(req,res)=>{
     res.send("You are logging in");
 });
