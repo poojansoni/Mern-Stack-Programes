@@ -3,3 +3,4 @@
 **/.vs
 **/.rar
 node_modules
+.env
