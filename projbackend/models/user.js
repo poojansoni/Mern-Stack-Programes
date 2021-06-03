@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const crypto = require("crypto");
-const uuidv1 = require("uuid/v1");
+const { v1: uuidv1 } = require('uuid');
+uuidv1();
 
 var Schema  = mongoose.Schema;
 
@@ -64,12 +65,12 @@ userSchema.virtual("password")
         return this._password;
     });
 
-userSchema.method = {
+userSchema.methods = {
     authenticate:function(plainPass){
-        return this.securePassword(plainPass) === this.encry_password
+        return this.securePassword(plainPass) === this.encry_password;
     },
 
-    securePassword = function(plainPass){
+    securePassword: function(plainPass){
         if(!plainPass) return ""; //returning empty strng will throw err with db cause field is required!
         try{
             return crypto.createHmac('sha256',this.salt).update(plainPass).digest('hex'); //storing hashed value direct in db
