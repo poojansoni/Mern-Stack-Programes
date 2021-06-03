@@ -1,4 +1,5 @@
 var express = require('express');
+const { check } = require('express-validator');
 var router = express.Router();
 
 //using controller
@@ -7,6 +8,10 @@ var {signout, signup} = require("../controllers/auth");
 //setting route
 router.get("/signout", signout);
 
-router.post("/signup",signup)
+router.post("/signup",[ //setting Validations for fields that are passed
+    check("name").isLength({min:3}).withMessage("Name should be atleast 3 chars"),
+    check("email").isEmail().withMessage("Email is required/Enter Valid email"),
+    check("password").isLength({min:5}).withMessage("Password should be atleast 5 chars")
+],signup)
 
 module.exports = router;
