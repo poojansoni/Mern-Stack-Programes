@@ -84,7 +84,7 @@ exports.isSignedIn = expressJwt({
 //custom middlewares
 exports.isAuthenticated = (req, res, next) => {
     //from ui properties of user does the profile exists? is the user signed in? and Authenticate -> can chng only his properties so, auth id and profile id should match
-    let checker = req.profile && req.auth && req.profile._id === req.auth._id;
+    let checker = req.profile && req.auth && req.profile._id == req.auth._id;
     if(!checker){
         return res.status(403).json({
             error: "ACCESS DENIED"
