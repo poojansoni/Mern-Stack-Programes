@@ -19,3 +19,14 @@ exports.getUser = (req,res) => {
     req.profile.updatedAt = undefined;
     return res.json(req.profile);
 }
+
+
+
+exports.getAllUsers = (req,res) => {
+    
+    User.collection.find().toArray(function(err, result) {
+        if (err) return res.status(400).json({error: err});
+        return res.json(result);
+    });
+    
+}
