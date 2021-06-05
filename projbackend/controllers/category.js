@@ -10,6 +10,17 @@ exports.getCategoryById = (req, res, next, id) =>{
     });
 };
 
+exports.getCategory = (req, res) =>{
+    return res.json(req.category);   
+};
+
+exports.getAllCategories = (req,res)=>{
+    Category.find().exec((err, categories) =>{
+        if(err) return res.status(400).json({error: "No Categories Found"});
+        return res.json(categories);
+    });
+};
+
 exports.createCategory = (req,res) => {
     const category = new Category(req.body);
     category.save((err, cat) => {
@@ -17,5 +28,16 @@ exports.createCategory = (req,res) => {
             return res.status(400).json({error: "Not able to save the Category in DB"});
         }
         res.json(cat);
-    })
+    });
+};
+
+exports.updateCategory = (req, res) =>{
+    const category = req.category;
+    category.name = req.body.name;
+    category.save((err, Updatedcat) => {
+        if(err){
+            return res.status(400).json({error: "Not able to Update the Category in DB"});
+        }
+        res.json(Updatedcat);
+    });
 };
