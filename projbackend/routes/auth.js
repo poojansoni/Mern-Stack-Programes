@@ -19,8 +19,8 @@ router.post("/signin",[ //setting Validations for fields that are passed
     check("password").isLength({min:5}).withMessage("Password Required (*5)")
 ],signin)
 
-router.get("/testroute", isSignedIn,(req,res)=>{
-    res.send("A protected route");
-});
+// router.get("/testroute", isSignedIn,(req,res)=>{
+//     res.json(req.auth);
+// });
 
 module.exports = router;

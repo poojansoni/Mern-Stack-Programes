@@ -81,7 +81,22 @@ exports.isSignedIn = expressJwt({
     userProperty: "auth"
 });
 
-// exports.isAuthenticated = ;
-
-
 //custom middlewares
+exports.isAuthenticated = (req, res, next) => {
+    //from ui properties of user does the profile exists? is the user signed in? and Authenticate -> can chng only his properties so, auth id and profile id should match
+    let checker = req.profile && req.auth && req.profile._id === req.auth._id;
+    if(!checker){
+        return res.status(403).json({
+            error: "ACCESS DENIED"
+        });
+    }
+    next();
+};
+exports.isAdmin = (req, res, next) => {
+    if(req.profile.role === 0){
+        return res.status(403).json({
+            error:"You are not ADMIN, access denied"
+        });
+    }
+    next();
+};
