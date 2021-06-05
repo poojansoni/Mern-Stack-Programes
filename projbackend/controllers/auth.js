@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken');
 const expressJwt = require('express-jwt');
 
 exports.signout = (req,res)=>{
+    //clear cookie
+    res.clearCookie("token");
     res.json({message:"Successfully signed out!"});
 }
 
@@ -71,3 +73,15 @@ exports.signin = (req,res)=>{
     });
 
 }
+
+//protected routes
+exports.isSignedIn = expressJwt({
+    secret: process.env.SECRET ,
+    algorithms: ['HS256'],
+    userProperty: "auth"
+});
+
+// exports.isAuthenticated = ;
+
+
+//custom middlewares
