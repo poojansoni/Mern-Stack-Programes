@@ -1,9 +1,12 @@
 var User = require("../models/user");
 const { validationResult } = require('express-validator');
+const jwt = require('jsonwebtoken');
+const expressJwt = require('express-jwt');
 
 exports.signout = (req,res)=>{
     res.json({message:"Successfully signed out!"});
 }
+
 exports.signup = (req,res)=>{
     //check the error passed on from validation checks in router
     var errs = validationResult(req);
@@ -30,4 +33,41 @@ exports.signup = (req,res)=>{
         });
     });
     
+}
+
+exports.signin = (req,res)=>{
+
+    const {email, password} = req.body;
+
+    //check the error passed on from validation checks in router
+    var errs = validationResult(req);
+    if(!errs.isEmpty()){
+        res.status(422).json({
+            error: errs.array()[0].msg,
+            parameter: errs.array()[0].param
+        });
+    }
+    
+    
+    User.findOne({email},(err, user)=>{
+        //if email is not found ie. err true
+        if(err || !user) 
+        {   return res.status(400).json({error: "User mail does not exist"});  }
+
+        //if password associated not matches
+        if(!user.authenticate(password)){
+            return res.status(401).json({error: "Password does not match"});
+        }
+
+        //if Successfull then create token
+        const token = jwt.sign({_id: user._id}, process.env.SECRET); 
+
+        //put token in cookie
+        res.cookie("token",token,{expire: new Date()+9999});
+
+        //send response to frontend
+        const {_id, name, email, role} = user;
+        res.json({token,user:{_id,name,email,role}});
+    });
+
 }
