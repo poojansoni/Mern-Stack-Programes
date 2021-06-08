@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { getProductById , createProduct, getProduct,photo, getAllProducts, updateProduct, deleteProduct} = require("../controllers/product");
+const { getProductById , createProduct, getProduct,photo, getAllProducts, updateProduct, deleteProduct, getAllUniqueCategories} = require("../controllers/product");
 const { isSignedIn, isAdmin, isAuthenticated } = require("../controllers/auth"); //admin can add chng category
 const { getUserById } = require("../controllers/user");
 
@@ -13,8 +13,10 @@ router.param('productId', getProductById);
 router.post('/product/create/:userId',isSignedIn, isAuthenticated, isAdmin, createProduct);
 router.get('/product/:productId', getProduct);
 router.get('/product/photo/:productId', photo);
-//router.get('/products', getAllProducts);
 router.put('/product/:productId/:userId',isSignedIn, isAuthenticated, isAdmin, updateProduct);
 router.delete('/product/:productId/:userId',isSignedIn, isAuthenticated, isAdmin, deleteProduct);
+router.get('/products', getAllProducts);
+router.get('/products/categories', getAllUniqueCategories);
+
 
 module.exports = router;
